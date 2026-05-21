@@ -1,4 +1,7 @@
 {
+  "[snippets]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnPaste": true,
@@ -36,6 +39,12 @@
     "**/dist/**": true,
     "**/node_modules/**": true
   },
+  "js/ts.format.enabled": false,
+  "js/ts.preferences.importModuleSpecifier": "relative",
+  "js/ts.suggest.autoImports": true,
+  "js/ts.tsc.autoDetect": "off",
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib",
+  "js/ts.updateImportsOnFileMove.enabled": "always",
   "prettier.configPath": ".prettierrc.mjs",
   "search.exclude": {
     // "**/.vscode/**": true,
@@ -64,14 +73,6 @@
       "path": "C:\\Program Files\\Git\\bin\\bash.exe"
     }
   },
-  "typescript.format.enable": false,
-  "typescript.preferences.importModuleSpecifier": "relative",
-  "typescript.suggest.autoImports": true,
-  "typescript.tsc.autoDetect": "off",
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "workbench.iconTheme": "helium-icon-theme",
-  "[snippets]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  "workbench.colorTheme": "Dark Modern",
+  "workbench.iconTheme": "helium-icon-theme"
 }
