@@ -1,13 +1,13 @@
-import path from "path";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import fs from "fs-extra";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from "path";
+import TerserWebpackPlugin from "terser-webpack-plugin";
 import TsConfigPathsWebpackPlugin from "tsconfig-paths-webpack-plugin";
 import { Configuration, EnvironmentPlugin, ProvidePlugin } from "webpack";
 import { ExtensionReloader } from "webpack-ext-reloader";
-import initialStorageData from "./options.extension.json";
-import TerserWebpackPlugin from "terser-webpack-plugin";
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const ExtensionReloaderWebpackPlugin: typeof ExtensionReloader = require("webpack-ext-reloader");
@@ -15,16 +15,16 @@ const ExtensionReloaderWebpackPlugin: typeof ExtensionReloader = require("webpac
 export default (_: unknown, env: { mode: Configuration["mode"] }) => {
   const { mode } = env;
 
-  if (mode === "development" && initialStorageData == null) {
-    console.info(
-      `Initial storage data file './options.extension.json' not found, default TailSearch options won't be listed.`
-    );
+  let demoStorageData = {};
+
+  if (mode === "development") {
+    demoStorageData = parseDemoStorageData();
   }
 
   const srcDir = path.resolve(__dirname, "src");
   const runtimeDir = path.join(srcDir, "runtime");
   const rendererDir = path.join(srcDir, "renderer");
-  const outputDir = path.resolve(__dirname, "out");
+  const distDir = path.resolve(__dirname, "dist");
 
   return {
     target: "web",
@@ -38,7 +38,7 @@ export default (_: unknown, env: { mode: Configuration["mode"] }) => {
       popup: path.join(rendererDir, "popup", "index.tsx")
     },
     output: {
-      path: outputDir,
+      path: distDir,
       filename: "js/[name].js",
       clean: true
     },
@@ -58,7 +58,7 @@ export default (_: unknown, env: { mode: Configuration["mode"] }) => {
     },
     plugins: [
       new EnvironmentPlugin({
-        EXTENSION_STORAGE_INITIAL_DATA: JSON.stringify(initialStorageData)
+        EXTENSION_STORAGE_INITIAL_DATA: JSON.stringify(demoStorageData)
       }),
       new ProvidePlugin({
         React: "react"
@@ -84,7 +84,7 @@ export default (_: unknown, env: { mode: Configuration["mode"] }) => {
         patterns: [
           {
             from: path.join(srcDir, "manifest.json"),
-            to: outputDir,
+            to: distDir,
             transform: (content) => {
               const manifestContent = JSON.parse(content.toString());
               delete manifestContent.$schema;
@@ -174,3 +174,28 @@ export default (_: unknown, env: { mode: Configuration["mode"] }) => {
     cache: true
   } satisfies Configuration;
 };
+
+function parseDemoStorageData() {
+  const demoStorageDataFilePath = path.resolve(__dirname, "demo-storage-data.json");
+
+  if (!fs.existsSync(demoStorageDataFilePath)) {
+    console.warn(
+      `Demo storage data file not found at ${demoStorageDataFilePath}, defaulting to an empty object.`
+    );
+  } else {
+    try {
+      const storageDataContent = fs.readFileSync(demoStorageDataFilePath, "utf-8");
+      return JSON.parse((storageDataContent ?? "").trim().length > 0 ? storageDataContent : "{}");
+    } catch (error) {
+      console.warn(
+        `Couldn't parse demo storage data: ${error instanceof Error ? error.message : "Unknown error"}\nDefaulting to an empty object.`
+      );
+      return {};
+    }
+  }
+
+  console.info(
+    `Initial storage data file does not exist, default to an empty object. Expected file path: ${demoStorageDataFilePath}`
+  );
+  return {};
+}

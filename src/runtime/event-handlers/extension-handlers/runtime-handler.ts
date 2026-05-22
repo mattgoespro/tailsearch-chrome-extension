@@ -15,7 +15,7 @@ export async function onInstalled() {
   };
 
   /**
-   * When debugging, store the initial data from the environment in sync storage.
+   * When in development mode, store the initial data from the environment in sync storage.
    */
   const { EXTENSION_STORAGE_INITIAL_DATA } = process.env;
 

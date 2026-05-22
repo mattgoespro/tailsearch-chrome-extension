@@ -13,7 +13,7 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "paths": {
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["./src/shared/*"]
     }
   }
 }
