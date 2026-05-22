@@ -34,3 +34,10 @@ export async function removeSearchTermOption(option: string) {
     );
   }
 }
+
+export async function addSearchTermOption(option: string) {
+  const currentData = await getStorageData();
+  const options = currentData.searchTermOptions ?? [];
+  if (options.includes(option)) return;
+  await updateStorageData({ searchTermOptions: [...options, option] });
+}

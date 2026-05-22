@@ -1,6 +1,7 @@
 type RuntimePortMessagePayloads = {
   "content-script-context-menu-opened": { selectedText: string };
   "set-current-search-term-option": { searchTerm: string };
+  "add-search-term-option": { searchTerm: string };
   "remove-search-term-option": { searchTerm: string };
   "content-script-tab-updated": never;
 };

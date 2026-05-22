@@ -1,8 +1,7 @@
 import Autocomplete from "@mui/material/Autocomplete";
-import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import { useStorage } from "../../hooks/use-storage";
 import { usePort } from "../../hooks/use-port";
+import { useStorage } from "../../hooks/use-storage";
 
 export function SearchTermInput() {
   const { data, loading, error } = useStorage();
@@ -17,20 +16,23 @@ export function SearchTermInput() {
   }
 
   return (
-    <FormControl>
-      <Autocomplete
-        fullWidth
-        value={data?.currentSearchTermOption ?? null}
-        loading={loading}
-        loadingText="Loading..."
-        options={
-          !loading && !error && data?.searchTermOptions != null ? data.searchTermOptions : []
-        }
-        slotProps={{ listbox: { sx: { flex: 1 } } }}
-        noOptionsText={error != null ? error.message : "No options"}
-        onChange={onValueChange}
-        renderInput={(params) => <TextField fullWidth {...params} color="primary" size="small" />}
-      />
-    </FormControl>
+    <Autocomplete
+      fullWidth
+      value={data?.currentSearchTermOption ?? null}
+      loading={loading}
+      loadingText="Loading…"
+      options={!loading && !error && data?.searchTermOptions != null ? data.searchTermOptions : []}
+      noOptionsText={error != null ? error.message : "No options yet"}
+      onChange={onValueChange}
+      renderInput={(params) => (
+        <TextField
+          fullWidth
+          {...params}
+          color="primary"
+          size="small"
+          placeholder="Select a search term"
+        />
+      )}
+    />
   );
 }

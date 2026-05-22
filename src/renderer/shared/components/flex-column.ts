@@ -23,5 +23,7 @@ export const FlexColumn = createStyled(Container, {
   justifyContent: centerHorizontal ? "center" : undefined,
   alignItems: centerVertical ? "center" : "stretch",
   padding: `${padding ?? 0}rem`,
-  margin: `${margin ?? 0}rem`
+  margin: `${margin ?? 0}rem`,
+  boxSizing: "border-box",
+  width: "100%"
 }));

@@ -1,5 +1,9 @@
 import { RuntimePortMessageEvent } from "../../../shared/message-event";
-import { removeSearchTermOption, updateStorageData } from "../../../shared/storage";
+import {
+  addSearchTermOption,
+  removeSearchTermOption,
+  updateStorageData
+} from "../../../shared/storage";
 import {
   updateContextMenuOption,
   TailsearchContextMenuOptionId,
@@ -27,11 +31,17 @@ async function updateExtensionStateForSearchTerm(searchTerm: string) {
 }
 
 export async function onSettingsPageMessageReceived(
-  message: RuntimePortMessageEvent<"set-current-search-term-option" | "remove-search-term-option">
+  message: RuntimePortMessageEvent<
+    "set-current-search-term-option" | "add-search-term-option" | "remove-search-term-option"
+  >
 ) {
   switch (message.type) {
     case "set-current-search-term-option": {
       await updateExtensionStateForSearchTerm(message.data.searchTerm);
+      break;
+    }
+    case "add-search-term-option": {
+      await addSearchTermOption(message.data.searchTerm);
       break;
     }
     case "remove-search-term-option": {

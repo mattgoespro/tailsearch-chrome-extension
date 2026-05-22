@@ -24,7 +24,8 @@ export const FlexBox = createStyled(Box, {
   wrap = true
 }) => {
   return {
-    minWidth: theme.breakpoints.values.sm,
+    minWidth: 0,
+    width: "100%",
     display: "flex",
     flexDirection: direction,
     justifyContent: justify,

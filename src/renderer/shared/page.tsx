@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
+import CssBaseline from "@mui/material/CssBaseline";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { createRoot } from "react-dom/client";
@@ -32,6 +33,7 @@ export function createPage(source: RuntimePortMessageSource, page: ReactNode) {
 
   createRoot(root).render(
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <PortContext.Provider
         value={{
           source,
